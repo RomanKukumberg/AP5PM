@@ -30,16 +30,21 @@ export class Tab3Page {
         resultType: CameraResultType.Uri,
         source: CameraSource.Camera,
       });
-
+  
       const savedFile = await this.savePhoto(photo);
+  
+      const photoInfo = await Filesystem.readFile({
+        path: savedFile.uri,
+        directory: Directory.Data
+      });
+  
       const displayName = this.formatDateFromFileName(savedFile.uri);
-
-      // Add new photo to the array
-      this.photos.push({ name: displayName, data: `data:image/jpeg;base64,${savedFile.data}` });
-      
-      // Mark for check to trigger change detection
-      this.cdr.markForCheck();  // Ensures that Angular checks for changes
-
+  
+      // Pridaj fotku do zoznamu
+      this.photos.push({ name: displayName, data: `data:image/jpeg;base64,${photoInfo.data}` });
+  
+      // Spusti detekciu zmien
+      this.cdr.markForCheck();
     } catch (error) {
       console.error('Error taking photo', error);
     }
@@ -79,20 +84,21 @@ export class Tab3Page {
         directory: Directory.Data,
         path: ''
       });
-
+  
       for (const photo of savedPhotos.files) {
         const photoInfo = await Filesystem.readFile({
           path: photo.name,
           directory: Directory.Data
         });
-
+  
         const displayName = this.formatDateFromFileName(photo.name);
-
-        this.photos.push({ name: displayName, data: `data:image/jpeg;base64,${photoInfo.data}` });
+  
+        if (displayName !== 'Invalid Date') {
+          this.photos.push({ name: displayName, data: `data:image/jpeg;base64,${photoInfo.data}` });
+        }
       }
-
-      // Mark for check to trigger change detection after loading photos
-      this.cdr.markForCheck();  // Ensure change detection is triggered after loading photos
+  
+      this.cdr.markForCheck();
     } catch (error) {
       console.error('Error loading photos', error);
     }
@@ -100,8 +106,19 @@ export class Tab3Page {
 
   // Helper method to format a filename into a human-readable date string
   formatDateFromFileName(fileName: string): string {
-    const timestamp = fileName.replace('photo_', '').replace('.jpeg', '');
-    const date = new Date(parseInt(timestamp));
+    const timestampString = fileName.replace('photo_', '').replace('.jpeg', '');
+    const timestamp = parseInt(timestampString);
+  
+    // Check if the timestamp is valid
+    if (isNaN(timestamp)) {
+      return 'Invalid Date';
+    }
+  
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) {
+      return 'Invalid Date';
+    }
+  
     return date.toLocaleString();
   }
 

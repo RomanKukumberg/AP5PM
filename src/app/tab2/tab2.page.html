@@ -19,15 +19,18 @@
             <p>Exercises: {{ training.exercises.length }}</p>
           </ion-label>
 
-          <!-- Button to show exercises in a modal -->
-          <ion-button fill="clear" color="primary" slot="end" (click)="showExercises(training)">
-            <ion-icon name="fitness"></ion-icon> Show Exercises
-          </ion-button>
+          <!-- Container for buttons below text -->
+          <div class="button-container">
+            <!-- Button to show exercises in a modal -->
+            <ion-button expand="block" color="primary" (click)="showExercises(training)">
+              <ion-icon name="fitness"></ion-icon> Show Exercises
+            </ion-button>
 
-          <!-- Button to delete the training -->
-          <ion-button fill="clear" color="danger" slot="end" (click)="removeTraining(i)">
-            <ion-icon name="trash"></ion-icon> Delete
-          </ion-button>
+            <!-- Button to delete the training -->
+            <ion-button expand="block" color="danger" (click)="removeTraining(i)">
+              <ion-icon name="trash"></ion-icon> Delete
+            </ion-button>
+          </div>
         </ion-item>
       </ion-list>
     </ion-card-content>
