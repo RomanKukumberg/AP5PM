@@ -1,17 +1,40 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title class="ion-text-center">Saved Trainings</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- List of saved trainings -->
+  <ion-card *ngIf="savedTrainings.length > 0">
+    <ion-card-header>
+      <ion-card-title>Saved Trainings</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let training of savedTrainings; let i = index">
+          <ion-label>
+            <h2>{{ training.name }}</h2>
+            <p>Date: {{ training.date }}</p>
+            <p>Exercises: {{ training.exercises.length }}</p>
+          </ion-label>
+          <ion-button fill="clear" color="danger" slot="end" (click)="removeTraining(i)">
+            <ion-icon name="trash"></ion-icon> Delete
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <!-- Show a message if there are no saved trainings -->
+  <ion-card *ngIf="savedTrainings.length === 0">
+    <ion-card-content class="ion-text-center">
+      <p>No trainings saved yet.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Clear all button -->
+  <ion-button expand="block" color="danger" class="ion-margin-top" (click)="clearTrainings()">
+    Clear All Trainings
+  </ion-button>
 </ion-content>

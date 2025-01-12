@@ -1,24 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Trénink</ion-title>
+    <ion-title class="ion-text-center">Training</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
- <!--Information about training-->
+  <!-- Information about training -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Training Information</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-item>
+      <ion-item lines="full">
         <ion-label position="floating">Training name</ion-label>
-        <ion-input [(ngModel)]="training.name" placeholder="Upper body"></ion-input>
+        <ion-input [(ngModel)]="training.name"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item lines="full">
         <ion-label position="floating">Date</ion-label>
-        <ion-datetime [(ngModel)]="training.date" presentation="date" placeholder="Choose date"></ion-datetime>
+        <ion-datetime [(ngModel)]="training.date" presentation="date"></ion-datetime>
       </ion-item>
     </ion-card-content>
   </ion-card>
@@ -26,43 +26,43 @@
   <!-- Add exercise -->
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Add exercise</ion-card-title>
+      <ion-card-title>Add Exercise</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-item>
+      <ion-item lines="full">
         <ion-label position="floating">Exercise name</ion-label>
-        <ion-input [(ngModel)]="newExercise.name" placeholder="Bench press"></ion-input>
+        <ion-input [(ngModel)]="newExercise.name"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item lines="full">
         <ion-label position="floating">Number of series</ion-label>
-        <ion-input type="number" [(ngModel)]="newExercise.sets" placeholder="3"></ion-input>
+        <ion-input type="number" [(ngModel)]="newExercise.sets"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item lines="full">
         <ion-label position="floating">Number of repeats</ion-label>
-        <ion-input type="number" [(ngModel)]="newExercise.reps" placeholder="12"></ion-input>
+        <ion-input type="number" [(ngModel)]="newExercise.reps"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item lines="full">
         <ion-label position="floating">Weight (kg)</ion-label>
-        <ion-input type="number" [(ngModel)]="newExercise.weight" placeholder="50"></ion-input>
+        <ion-input type="number" [(ngModel)]="newExercise.weight"></ion-input>
       </ion-item>
 
-      <ion-button expand="block" color="secondary" (click)="addExercise()">
-        Add exercise
+      <ion-button expand="block" color="tertiary" class="ion-margin-top" (click)="addExercise()">
+        Add Exercise
       </ion-button>
     </ion-card-content>
   </ion-card>
 
-  <!-- List of exercises-->
+  <!-- List of exercises -->
   <ion-card *ngIf="training.exercises.length > 0">
     <ion-card-header>
-      <ion-card-title>List of exercises</ion-card-title>
+      <ion-card-title>List of Exercises</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let exercise of training.exercises; let i = index">
+        <ion-item *ngFor="let exercise of training.exercises; let i = index" lines="full">
           <ion-label>
             <h3>{{ exercise.name }}</h3>
             <p>Series: {{ exercise.sets }}, Repeats: {{ exercise.reps }}, Weight: {{ exercise.weight }} kg</p>
@@ -76,7 +76,23 @@
   </ion-card>
 
   <!-- Save Training -->
-  <ion-button expand="block" color="primary" [disabled]="training.exercises.length === 0" (click)="saveTraining()">
-    Save training
+  <ion-button expand="block" color="success" class="ion-margin-top" [disabled]="training.exercises.length === 0" (click)="saveTraining()">
+    Save Training
   </ion-button>
 </ion-content>
+
+<style>
+  ion-card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  ion-item {
+    margin-bottom: 8px;
+  }
+
+  ion-button {
+    margin-top: 16px;
+  }
+</style>
