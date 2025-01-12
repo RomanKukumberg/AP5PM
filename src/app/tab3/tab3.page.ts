@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { ModalController } from '@ionic/angular';
+import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
+
 
 @Component({
   selector: 'app-tab3',
@@ -11,7 +14,7 @@ export class Tab3Page {
   photos: { name: string, data: string }[] = [];
   selectedPhoto: { name: string, data: string } | null = null;
 
-  constructor() {}
+  constructor(private modalController: ModalController) {}
   //Initialization
   async ngOnInit() {
     await this.loadPhotos();
@@ -94,8 +97,12 @@ export class Tab3Page {
   }
 
   // Method to display a selected photo
-  showPhoto(photo: { name: string, data: string }) {
-    this.selectedPhoto = photo;
+  async showPhoto(photo: { name: string, data: string }) {
+    const modal = await this.modalController.create({
+      component: PhotoModalComponent,
+      componentProps: { photo }
+    });
+    return await modal.present();
   }
 
   // Method to close the photo display

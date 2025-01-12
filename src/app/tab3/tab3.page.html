@@ -5,19 +5,15 @@
 </ion-header>
 
 <ion-content>
-  <!-- Display photos in a gallery -->
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let photo of photos">
-        <ion-card (click)="showPhoto(photo)">
-          <ion-img [src]="photo.data" [alt]="'Photo Progress'"></ion-img>
-          <ion-card-content>
-            {{ photo.name }}
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="photo-list-header">
+    <h2>Progess Photo List</h2>
+  </div>
+  <!-- Display photos in a list-->
+  <ion-list>
+    <ion-item *ngFor="let photo of photos" (click)="showPhoto(photo)">
+      <ion-label>{{ photo.name }}</ion-label>
+    </ion-item>
+  </ion-list>
 
   <!-- If there are no photos yet, show a button -->
   <ion-button *ngIf="photos.length === 0" expand="full" color="medium">
@@ -29,9 +25,4 @@
     Take a Photo
   </ion-button>
 
-  <!-- Display the selected photo -->
-  <div *ngIf="selectedPhoto" class="photo-display">
-    <ion-img [src]="selectedPhoto.data"></ion-img>
-    <ion-button expand="full" color="danger" (click)="closePhoto()">Close</ion-button>
-  </div>
 </ion-content>
