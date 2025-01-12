@@ -1,21 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { ModalController } from '@ionic/angular';
 import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
 
-
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss']
+  styleUrls: ['tab3.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush  // Add OnPush change detection strategy
 })
 export class Tab3Page {
   photos: { name: string, data: string }[] = [];
   selectedPhoto: { name: string, data: string } | null = null;
 
-  constructor(private modalController: ModalController) {}
-  //Initialization
+  constructor(private modalController: ModalController, private cdr: ChangeDetectorRef) {}
+
+  // Initialization
   async ngOnInit() {
     await this.loadPhotos();
   }
@@ -33,7 +34,12 @@ export class Tab3Page {
       const savedFile = await this.savePhoto(photo);
       const displayName = this.formatDateFromFileName(savedFile.uri);
 
+      // Add new photo to the array
       this.photos.push({ name: displayName, data: `data:image/jpeg;base64,${savedFile.data}` });
+      
+      // Mark for check to trigger change detection
+      this.cdr.markForCheck();  // Ensures that Angular checks for changes
+
     } catch (error) {
       console.error('Error taking photo', error);
     }
@@ -84,6 +90,9 @@ export class Tab3Page {
 
         this.photos.push({ name: displayName, data: `data:image/jpeg;base64,${photoInfo.data}` });
       }
+
+      // Mark for check to trigger change detection after loading photos
+      this.cdr.markForCheck();  // Ensure change detection is triggered after loading photos
     } catch (error) {
       console.error('Error loading photos', error);
     }
@@ -100,7 +109,7 @@ export class Tab3Page {
   async showPhoto(photo: { name: string, data: string }) {
     const modal = await this.modalController.create({
       component: PhotoModalComponent,
-      componentProps: { photo }
+      componentProps: { photo: photo }
     });
     return await modal.present();
   }

@@ -18,6 +18,13 @@
             <p>Date: {{ training.date }}</p>
             <p>Exercises: {{ training.exercises.length }}</p>
           </ion-label>
+
+          <!-- Button to show exercises in a modal -->
+          <ion-button fill="clear" color="primary" slot="end" (click)="showExercises(training)">
+            <ion-icon name="fitness"></ion-icon> Show Exercises
+          </ion-button>
+
+          <!-- Button to delete the training -->
           <ion-button fill="clear" color="danger" slot="end" (click)="removeTraining(i)">
             <ion-icon name="trash"></ion-icon> Delete
           </ion-button>
